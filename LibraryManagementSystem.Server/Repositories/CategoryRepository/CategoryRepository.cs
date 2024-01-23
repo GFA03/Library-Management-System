@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Data.Models.Category;
+﻿using LibraryManagementSystem.Server.Models.Category;
 
 namespace LibraryManagementSystem.Server.Repositories.CategoryRepository
 {
@@ -22,7 +22,7 @@ namespace LibraryManagementSystem.Server.Repositories.CategoryRepository
 
         public void RemoveCategory(int index)
         {
-            if (index < 0 || index > _categories.Count)
+            if (index < 0 || index >= _categories.Count)
             {
                 throw new ArgumentOutOfRangeException("index");
             }

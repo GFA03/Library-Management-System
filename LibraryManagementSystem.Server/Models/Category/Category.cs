@@ -1,6 +1,6 @@
-﻿using LibraryManagementSystem.Server.Data.Models.Base;
+﻿using LibraryManagementSystem.Server.Models.Base;
 
-namespace LibraryManagementSystem.Server.Data.Models.Category
+namespace LibraryManagementSystem.Server.Models.Category
 {
     public class Category : BaseEntity
     {

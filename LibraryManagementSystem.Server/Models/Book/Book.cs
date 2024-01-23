@@ -1,6 +1,6 @@
-﻿using LibraryManagementSystem.Server.Data.Models.Base;
+﻿using LibraryManagementSystem.Server.Models.Base;
 
-namespace LibraryManagementSystem.Server.Data.Models.Book
+namespace LibraryManagementSystem.Server.Models.Book
 {
     public class Book : BaseEntity
     {

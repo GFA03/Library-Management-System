@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Data.Models.Category;
+﻿using LibraryManagementSystem.Server.Models.Category;
 using LibraryManagementSystem.Server.Repositories.CategoryRepository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,8 +42,6 @@ namespace LibraryManagementSystem.Server.Controllers
             _categoryRepository.RemoveCategory(index);
             return CreatedAtAction(nameof(GetAllCategories), null);
         }
-
-
 
     }
 }

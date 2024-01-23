@@ -1,4 +1,4 @@
-﻿namespace LibraryManagementSystem.Server.Data.Models.Base
+﻿namespace LibraryManagementSystem.Server.Models.Base
 {
     public interface IBaseEntity
     {

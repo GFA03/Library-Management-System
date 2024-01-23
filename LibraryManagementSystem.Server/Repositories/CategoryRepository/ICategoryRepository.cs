@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Data.Models.Category;
+﻿using LibraryManagementSystem.Server.Models.Category;
 
 namespace LibraryManagementSystem.Server.Repositories.CategoryRepository
 {

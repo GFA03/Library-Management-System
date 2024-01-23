@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Data.Models.Author;
+﻿using LibraryManagementSystem.Server.Models.Author;
 
 namespace LibraryManagementSystem.Server.Repositories.AuthorRepository
 {

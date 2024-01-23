@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LibraryManagementSystem.Server.Data.Models.Base
+namespace LibraryManagementSystem.Server.Models.Base
 {
     public class BaseEntity : IBaseEntity
     {
@@ -9,7 +9,7 @@ namespace LibraryManagementSystem.Server.Data.Models.Base
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public DateTime? LastModified {  get; set; }
+        public DateTime? LastModified { get; set; }
         public bool isDeleted { get; set; } = false;
     }
 }

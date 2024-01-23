@@ -1,6 +1,6 @@
-﻿using LibraryManagementSystem.Server.Data.Models.Base;
+﻿using LibraryManagementSystem.Server.Models.Base;
 
-namespace LibraryManagementSystem.Server.Data.Models.Author
+namespace LibraryManagementSystem.Server.Models.Author
 {
     public class Author : BaseEntity
     {
