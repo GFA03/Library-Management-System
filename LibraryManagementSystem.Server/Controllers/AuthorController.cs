@@ -1,5 +1,5 @@
-﻿using LibraryManagementSystem.Server.Data.Models;
-using LibraryManagementSystem.Server.Repositories;
+﻿using LibraryManagementSystem.Server.Data.Models.Author;
+using LibraryManagementSystem.Server.Repositories.AuthorRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Controllers

@@ -24,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Models\Author\" />
-    <Folder Include="Data\Models\Book\" />
-    <Folder Include="Data\Models\Category\" />
-    <Folder Include="Repositories\Author\" />
-    <Folder Include="Repositories\Book\" />
-    <Folder Include="Repositories\Category\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

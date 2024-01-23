@@ -1,4 +1,6 @@
-using LibraryManagementSystem.Server.Repositories;
+using LibraryManagementSystem.Server.Repositories.AuthorRepository;
+using LibraryManagementSystem.Server.Repositories.BookRepository;
+using LibraryManagementSystem.Server.Repositories.CategoryRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 

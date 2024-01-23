@@ -1,8 +1,8 @@
-﻿using LibraryManagementSystem.Server.Data.Models;
+﻿using LibraryManagementSystem.Server.Data.Models.Book;
 
-namespace LibraryManagementSystem.Server.Repositories
+namespace LibraryManagementSystem.Server.Repositories.BookRepository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly List<Book> _books = new List<Book>();
 

@@ -1,14 +1,15 @@
-﻿namespace LibraryManagementSystem.Server.Data.Models
+﻿using LibraryManagementSystem.Server.Data.Models.Base;
+
+namespace LibraryManagementSystem.Server.Data.Models.Book
 {
-    public class Book
+    public class Book : BaseEntity
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string Language { get; set; }
         public string Description { get; set; }
-        public string State { get; set; }
-        public DateTime PublicationDate {  get; set; }
+        public string Condition { get; set; }
+        public DateTime PublicationDate { get; set; }
         public int AvailableCopies { get; set; }
         public string CoverImage { get; set; }
 

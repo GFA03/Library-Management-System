@@ -1,8 +1,8 @@
-﻿using LibraryManagementSystem.Server.Data.Models;
+﻿using LibraryManagementSystem.Server.Data.Models.Author;
 
-namespace LibraryManagementSystem.Server.Repositories
+namespace LibraryManagementSystem.Server.Repositories.AuthorRepository
 {
-    public class AuthorRepository
+    public class AuthorRepository : IAuthorRepository
     {
         private readonly List<Author> _authors = new List<Author>();
 
