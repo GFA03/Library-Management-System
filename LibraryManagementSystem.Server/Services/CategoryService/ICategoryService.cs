@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Models.Category;
+﻿using LibraryManagementSystem.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Services.CategoryService

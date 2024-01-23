@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Models.Book;
+﻿using LibraryManagementSystem.Server.Models;
 using LibraryManagementSystem.Server.Repositories.BookRepository;
 using Microsoft.AspNetCore.Mvc;
 

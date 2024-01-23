@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Models.Author;
+﻿using LibraryManagementSystem.Server.Models;
 using LibraryManagementSystem.Server.Repositories.AuthorRepository;
 using Microsoft.AspNetCore.Mvc;
 

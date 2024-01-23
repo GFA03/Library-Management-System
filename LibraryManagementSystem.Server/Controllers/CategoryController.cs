@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Models.Category;
+﻿using LibraryManagementSystem.Server.Models;
 using LibraryManagementSystem.Server.Repositories.CategoryRepository;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Server.Models.Book;
+﻿using LibraryManagementSystem.Server.Models;
 
 namespace LibraryManagementSystem.Server.Repositories.BookRepository
 {
