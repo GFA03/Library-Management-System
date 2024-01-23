@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<BookRepository>();
 builder.Services.AddSingleton<AuthorRepository>();
+builder.Services.AddSingleton<CategoryRepository>();
 
 var app = builder.Build();
 
