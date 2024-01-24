@@ -65,18 +65,16 @@ namespace LibraryManagementSystem.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AuthorId")
+                    b.Property<Guid?>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AvailableCopies")
                         .HasColumnType("int");
 
                     b.Property<string>("Condition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CoverImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")
@@ -93,8 +91,8 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PublicationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("PublicationDate")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -119,6 +117,8 @@ namespace LibraryManagementSystem.Server.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("BookId", "CategoryId");
+
+                    b.HasIndex("BookId");
 
                     b.HasIndex("CategoryId");
 
@@ -168,8 +168,7 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.HasOne("LibraryManagementSystem.Server.Models.Author", "Author")
                         .WithMany("Books")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Author");
                 });

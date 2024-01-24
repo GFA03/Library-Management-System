@@ -1,11 +1,13 @@
 ﻿using LibraryManagementSystem.Server.Models.DTOs.AuthorDTO;
 using LibraryManagementSystem.Server.Services.AuthorService;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorService _authorService;

@@ -1,11 +1,13 @@
 ﻿using LibraryManagementSystem.Server.Models.DTOs.CategoryDTO;
 using LibraryManagementSystem.Server.Services.CategoryService;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;

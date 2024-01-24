@@ -1,11 +1,13 @@
 ﻿using LibraryManagementSystem.Server.Models.DTOs.BookDTO;
 using LibraryManagementSystem.Server.Services.BookService;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
