@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LibraryManagementSystem.Server.Controllers
 {
     [ApiController]
-    [Route("api/books")]
+    [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -15,7 +15,7 @@ namespace LibraryManagementSystem.Server.Controllers
             _bookService = bookService;
         }
 
-        [HttpGet("all")]
+        [HttpGet("GetBooksList")]
         [ProducesResponseType(typeof(List<BookDTO>), 200)]
         public async Task<IActionResult> GetAllBooks()
         {
@@ -24,21 +24,21 @@ namespace LibraryManagementSystem.Server.Controllers
         }
 
 
-        [HttpPost("create")]
+        [HttpPost("createBook")]
         public async Task<IActionResult> AddBook(CreateBookDTO bookDto)
         {
             await _bookService.CreateBook(bookDto);
             return CreatedAtAction(nameof(AddBook), null);
         }
 
-        [HttpPatch("update")]
+        [HttpPatch("updateBook")]
         public IActionResult UpdateBook(UpdateBookDTO bookDto)
         {
             _bookService.UpdateBook(bookDto);
             return CreatedAtAction(nameof(UpdateBook), null);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("deleteBook/{id}")]
         public async Task<IActionResult> RemoveBook(Guid id)
         {
             var result = await _bookService.RemoveBook(id);

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LibraryManagementSystem.Server.Controllers
 {
     [ApiController]
-    [Route("api/categories")]
+    [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -15,7 +15,7 @@ namespace LibraryManagementSystem.Server.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet("all")]
+        [HttpGet("GetCategories")]
         [ProducesResponseType(typeof(List<CategoryDTO>), 200)]
         public async Task<IActionResult> GetAllCategories()
         {
@@ -24,21 +24,21 @@ namespace LibraryManagementSystem.Server.Controllers
         }
 
 
-        [HttpPost("create")]
+        [HttpPost("createCategory")]
         public async Task<IActionResult> AddCategory(CreateCategoryDTO categoryDto)
         {
             await _categoryService.CreateCategory(categoryDto);
             return CreatedAtAction(nameof(AddCategory), null);
         }
 
-        [HttpPatch("update")]
+        [HttpPatch("updateCategory")]
         public IActionResult UpdateCategory(UpdateCategoryDTO categoryDto)
         {
             _categoryService.UpdateCategory(categoryDto);
             return CreatedAtAction(nameof(UpdateCategory), null);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("deleteCategory/{id}")]
         public async Task<IActionResult> RemoveCategory(Guid id)
         {
             var result = await _categoryService.RemoveCategory(id);
