@@ -7,6 +7,7 @@ namespace LibraryManagementSystem.Server.Models.Base
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public Guid Id { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? LastModified { get; set; }

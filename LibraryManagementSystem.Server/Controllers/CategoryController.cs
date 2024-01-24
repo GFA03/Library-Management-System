@@ -1,5 +1,5 @@
-﻿using LibraryManagementSystem.Server.Models;
-using LibraryManagementSystem.Server.Repositories.CategoryRepository;
+﻿using LibraryManagementSystem.Server.Models.DTOs.CategoryDTO;
+using LibraryManagementSystem.Server.Services.CategoryService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Controllers
@@ -8,39 +8,41 @@ namespace LibraryManagementSystem.Server.Controllers
     [Route("api/categories")]
     public class CategoryController : ControllerBase
     {
-        private readonly CategoryRepository _categoryRepository;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(CategoryRepository categoryRepository)
+        public CategoryController(ICategoryService categoryService)
         {
-            _categoryRepository = categoryRepository;
+            _categoryService = categoryService;
         }
 
-        [HttpGet]
-        public IActionResult GetAllCategories()
+        [HttpGet("all")]
+        [ProducesResponseType(typeof(List<CategoryDTO>), 200)]
+        public async Task<IActionResult> GetAllCategories()
         {
-            var categories = _categoryRepository.GetAllCategories();
+            var categories = await _categoryService.GetAllCategories();
             return Ok(categories);
         }
 
-        [HttpGet("name")]
-        public IActionResult GetCategoriesByName(string Name)
+
+        [HttpPost("create")]
+        public async Task<IActionResult> AddCategory(CreateCategoryDTO categoryDto)
         {
-            var categories = _categoryRepository.GetCategoriesByName(Name);
-            return Ok(categories);
+            await _categoryService.CreateCategory(categoryDto);
+            return CreatedAtAction(nameof(AddCategory), null);
         }
 
-        [HttpPost]
-        public IActionResult AddCategory(Category category)
+        [HttpPatch("update")]
+        public IActionResult UpdateCategory(UpdateCategoryDTO categoryDto)
         {
-            _categoryRepository.AddCategory(category);
-            return CreatedAtAction(nameof(GetAllCategories), null);
+            _categoryService.UpdateCategory(categoryDto);
+            return CreatedAtAction(nameof(UpdateCategory), null);
         }
 
-        [HttpDelete]
-        public IActionResult RemoveCategory(int index)
+        [HttpDelete("delete")]
+        public async Task<IActionResult> RemoveCategory(Guid id)
         {
-            _categoryRepository.RemoveCategory(index);
-            return CreatedAtAction(nameof(GetAllCategories), null);
+            var result = await _categoryService.RemoveCategory(id);
+            return CreatedAtAction(nameof(RemoveCategory), null);
         }
 
     }

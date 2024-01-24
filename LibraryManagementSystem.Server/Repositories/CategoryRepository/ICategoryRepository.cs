@@ -1,15 +1,10 @@
 ﻿using LibraryManagementSystem.Server.Models;
+using LibraryManagementSystem.Server.Repositories.GenericRepository;
 
 namespace LibraryManagementSystem.Server.Repositories.CategoryRepository
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IGenericRepository<Category>
     {
-        List<Category> GetAllCategories();
-
-        List<Category> GetCategoriesByName(string Name);
-
-        void AddCategory(Category category);
-
-        void RemoveCategory(int index);
+        List<Category> GetAllCategoriesByName(string categoryName);
     }
 }

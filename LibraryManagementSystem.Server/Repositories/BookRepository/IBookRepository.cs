@@ -1,11 +1,10 @@
 ﻿using LibraryManagementSystem.Server.Models;
+using LibraryManagementSystem.Server.Repositories.GenericRepository;
 
 namespace LibraryManagementSystem.Server.Repositories.BookRepository
 {
-    public interface IBookRepository
+    public interface IBookRepository : IGenericRepository<Book>
     {
-        List<Book> GetAllBooks();
-
-        void AddBook(Book book);
+        List<Book> GetBooksByTitle(string title);
     }
 }

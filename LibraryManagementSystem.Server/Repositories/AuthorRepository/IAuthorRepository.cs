@@ -1,13 +1,11 @@
 ﻿using LibraryManagementSystem.Server.Models;
+using LibraryManagementSystem.Server.Repositories.GenericRepository;
 
 namespace LibraryManagementSystem.Server.Repositories.AuthorRepository
 {
-    public interface IAuthorRepository
+    public interface IAuthorRepository : IGenericRepository<Author>
     {
-
-        List<Author> GetAllAuthors();
-
-        void AddAuthor(Author author);
+        List<Author> GetAuthorListByName(string name);
             
     }
 }

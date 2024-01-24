@@ -1,14 +1,14 @@
-﻿using LibraryManagementSystem.Server.Models;
+﻿using LibraryManagementSystem.Server.Models.DTOs.CategoryDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Services.CategoryService
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
-        Task<Category> GetCategoriesByNameAsync(string Name);
-        Task AddCategory(Category category);
-        Task UpdateCategory(int id, Category category);
-        Task RemoveCategory(int index);
+        Task<List<CategoryDTO>> GetAllCategories();
+        List<CategoryDTO> GetCategoriesByName(string Name);
+        Task CreateCategory(CreateCategoryDTO CategoryDto);
+        Task UpdateCategory(UpdateCategoryDTO CategoryDto);
+        Task<bool> RemoveCategory(Guid id);
     }
 }

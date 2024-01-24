@@ -9,6 +9,6 @@ namespace LibraryManagementSystem.Server.Models
 
         public ICollection<Author> PreferredAuthors { get; set; }
 
-        public ICollection<Book> Books { get; set; }
+        public ICollection<BookCategory> Books { get; set; } = [];
     }
 }

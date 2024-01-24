@@ -1,32 +1,24 @@
-﻿using LibraryManagementSystem.Server.Models;
+﻿using LibraryManagementSystem.Server.Data;
+using LibraryManagementSystem.Server.Models;
+using LibraryManagementSystem.Server.Repositories.GenericRepository;
+
 
 namespace LibraryManagementSystem.Server.Repositories.CategoryRepository
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        private readonly List<Category> _categories = new List<Category>();
-        public List<Category> GetAllCategories()
+        public CategoryRepository(LibraryDatabaseContext databaseContext) : base(databaseContext)
         {
-            return _categories;
         }
-
-        public List<Category> GetCategoriesByName(string Name)
+        public List<Category> GetAllCategoriesByName(string categoryName)
         {
-            return _categories.FindAll(c => c.Name.ToLower().Contains(Name.ToLower()));
-        }
-
-        public void AddCategory(Category category)
-        {
-            _categories.Add(category);
-        }
-
-        public void RemoveCategory(int index)
-        {
-            if (index < 0 || index >= _categories.Count)
+            IQueryable<Category> query = _table;
+            if(!string.IsNullOrEmpty(categoryName))
             {
-                throw new ArgumentOutOfRangeException("index");
+                var normalizedName = categoryName.ToLower();
+                query = query.Where(category => category.Name.ToLower().Contains(normalizedName));
             }
-            _categories.RemoveAt(index);
+            return query.ToList();
         }
     }
 }

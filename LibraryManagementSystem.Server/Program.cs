@@ -1,7 +1,5 @@
 using LibraryManagementSystem.Server.Data;
-using LibraryManagementSystem.Server.Repositories.AuthorRepository;
-using LibraryManagementSystem.Server.Repositories.BookRepository;
-using LibraryManagementSystem.Server.Repositories.CategoryRepository;
+using LibraryManagementSystem.Server.Helpers.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,12 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<LibraryDatabaseContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<BookRepository>();
-builder.Services.AddSingleton<AuthorRepository>();
-builder.Services.AddSingleton<CategoryRepository>();
+
+builder.Services.AddRepositories();
+builder.Services.AddServices();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

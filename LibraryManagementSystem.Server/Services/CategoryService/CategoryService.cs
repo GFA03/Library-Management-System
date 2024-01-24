@@ -1,5 +1,8 @@
-﻿using LibraryManagementSystem.Server.Models;
+﻿using AutoMapper;
+using LibraryManagementSystem.Server.Models;
+using LibraryManagementSystem.Server.Models.DTOs.CategoryDTO;
 using LibraryManagementSystem.Server.Repositories.CategoryRepository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Services.CategoryService
@@ -7,35 +10,42 @@ namespace LibraryManagementSystem.Server.Services.CategoryService
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryService(ICategoryRepository categoryRepository)
+        private readonly IMapper _mapper;
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
-        public Task AddCategory(Category category)
+        public async Task<List<CategoryDTO>> GetAllCategories()
         {
-            _categoryRepository.AddCategory(category);
-            return Task.CompletedTask;
+            var categories = await _categoryRepository.GetAllAsync();
+            return _mapper.Map<List<CategoryDTO>>(categories);
         }
 
-        public Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        public List<CategoryDTO> GetCategoriesByName(string Name)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<List<CategoryDTO>>(_categoryRepository.GetAllCategoriesByName(Name));
         }
 
-        public Task<Category> GetCategoriesByNameAsync(string Name)
+        public async Task CreateCategory(CreateCategoryDTO CategoryDto)
         {
-            throw new NotImplementedException();
+            await _categoryRepository.CreateAsync(_mapper.Map<Category>(CategoryDto));
+            await _categoryRepository.SaveAsync();
         }
 
-        public Task RemoveCategory(int index)
+        public async Task UpdateCategory(UpdateCategoryDTO CategoryDto)
         {
-            throw new NotImplementedException();
+            var category = _mapper.Map<Category>(CategoryDto);
+            _categoryRepository.Update(_mapper.Map<Category>(category));
+            await _categoryRepository.SaveAsync();
         }
 
-        public Task UpdateCategory(int id, Category category)
+        public async Task<bool> RemoveCategory(Guid id)
         {
-            throw new NotImplementedException();
+            _categoryRepository.DeleteById(id);
+            return await _categoryRepository.SaveAsync();
         }
+
     }
 }
