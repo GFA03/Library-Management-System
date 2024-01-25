@@ -33,7 +33,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return CreatedAtAction(nameof(AddCategory), null);
         }
 
-        [HttpPatch("updateCategory")]
+        [HttpPut("updateCategory")]
         public IActionResult UpdateCategory(UpdateCategoryDTO categoryDto)
         {
             _categoryService.UpdateCategory(categoryDto);

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CreateAuthorForm from "../features/author/CreateAuthorForm";
 
 interface Author {
   id: string;
@@ -28,6 +27,29 @@ function Authors() {
     }
   };
 
+  const handleDeleteAuthor = async (id: string) => {
+    try {
+      // Make a DELETE request to the API endpoint for deleting the author
+      const response = await fetch(
+        `https://localhost:7277/api/Author/deleteAuthor/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Author deleted successfully, update the author list
+        fetchAuthors();
+      } else {
+        // Handle error response
+        console.error("Error deleting author:", response.statusText);
+      }
+    } catch (error: unknown) {
+      // Handle network or other errors
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <>
       <div>
@@ -36,12 +58,19 @@ function Authors() {
           {authors?.map((author) => (
             <li key={author.id}>
               {author.firstName} {author.lastName} - {author.nationality}
+              <button onClick={() => handleDeleteAuthor(author.id)}>
+                Delete
+              </button>
             </li>
           ))}
         </ul>
       </div>
-      <Link to="/home">Go to Home Page</Link>
-      <CreateAuthorForm />
+      <div>
+        <Link to="/home">Go to Home Page</Link>
+      </div>
+      <div>
+        <Link to="/authors/add">Add Author</Link>
+      </div>
     </>
   );
 }

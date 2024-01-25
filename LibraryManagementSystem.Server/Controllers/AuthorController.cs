@@ -33,7 +33,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return CreatedAtAction(nameof(AddAuthor), null);
         }
 
-        [HttpPatch("updateAuthor")]
+        [HttpPut("updateAuthor")]
         public IActionResult UpdateAuthor(UpdateAuthorDTO authorDto)
         {
             _authorService.UpdateAuthor(authorDto);
