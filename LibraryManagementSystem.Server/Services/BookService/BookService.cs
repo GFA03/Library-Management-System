@@ -36,7 +36,7 @@ namespace LibraryManagementSystem.Server.Services.BookService
         public async Task UpdateBook(UpdateBookDTO bookDto)
         {
             var book = _mapper.Map<Book>(bookDto);
-            _bookRepository.Update(book);
+            _bookRepository.Update(_mapper.Map<Book>(book));
             await _bookRepository.SaveAsync();
         }
 

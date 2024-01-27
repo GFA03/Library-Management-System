@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Author {
   id: string;
@@ -10,6 +10,8 @@ interface Author {
 
 function Authors() {
   const [authors, setAuthors] = useState<Author[]>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAuthors();
@@ -60,6 +62,9 @@ function Authors() {
               {author.firstName} {author.lastName} - {author.nationality}
               <button onClick={() => handleDeleteAuthor(author.id)}>
                 Delete
+              </button>
+              <button onClick={() => navigate("update", { state: { author } })}>
+                Edit
               </button>
             </li>
           ))}

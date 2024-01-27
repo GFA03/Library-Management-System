@@ -7,6 +7,8 @@
         public string Language { get; set; }
         public string Description { get; set; }
         public int PublicationDate { get; set; }
+        public int AvailableCopies { get; set; }
+
         public Guid? AuthorId { get; set; }
     }
 }

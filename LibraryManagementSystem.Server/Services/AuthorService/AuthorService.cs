@@ -35,7 +35,7 @@ namespace LibraryManagementSystem.Server.Services.AuthorService
         public async Task UpdateAuthor(UpdateAuthorDTO AuthorDto)
         {
             var author = _mapper.Map<Author>(AuthorDto);
-            _authorRepository.Update(author);
+            _authorRepository.Update(_mapper.Map<Author>(author));
             await _authorRepository.SaveAsync();
         }
         public async Task<bool> RemoveAuthor(Guid id)
