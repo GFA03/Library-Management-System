@@ -57,6 +57,7 @@ const App: React.FC = () => {
 
       if (response.ok) {
         // Author updated successfully - navigate back to the author list
+
         console.log("Author updated successfully");
       } else {
         console.error("Error updating author: ", response.statusText);

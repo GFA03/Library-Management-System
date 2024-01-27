@@ -20,6 +20,7 @@ namespace LibraryManagementSystem.Server.Helpers
             CreateMap<CategoryDTO, Category>();
 
             CreateMap<BookCategoryDTO, BookCategory>();
+            CreateMap<BookCategory, BookCategoryDTO>();
 
             CreateMap<CreateAuthorDTO, Author>()
                 .ForMember(a => a.Id, opt =>

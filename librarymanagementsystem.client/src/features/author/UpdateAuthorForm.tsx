@@ -32,14 +32,14 @@ const UpdateAuthorForm: React.FC<UpdateAuthorFormProps> = ({
     }
   );
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setAuthorData({ ...authorData, [name]: value });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onUpdateAuthor(authorData); // Call the function passed from the parent component to update the author
+    await onUpdateAuthor(authorData); // Call the function passed from the parent component to update the author
     navigate("/authors");
   };
 

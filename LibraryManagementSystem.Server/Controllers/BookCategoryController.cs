@@ -25,10 +25,17 @@ namespace LibraryManagementSystem.Server.Controllers
             return Ok(bookCategories);
         }
 
+        [HttpPost("CreateBookCategory")]
+        public async Task<IActionResult> CreateBookCategory(BookCategoryDTO bookCategoryDto)
+        {
+            _bookCategoryService.CreateBookCategory(bookCategoryDto);
+            return Ok(bookCategoryDto);
+        }
+
         [HttpDelete("RemoveBookCategory/{bookId}/{categoryId}")]
         public async Task<IActionResult> RemoveBookCategory(Guid bookId, Guid categoryId)
         {
-            var result = await _bookCategoryService.RemoveBook(bookId, categoryId);
+            var result = await _bookCategoryService.RemoveBookCategory(bookId, categoryId);
 
             if (result)
             {

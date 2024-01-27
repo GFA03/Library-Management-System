@@ -21,14 +21,14 @@ namespace LibraryManagementSystem.Server.Services.BookCategoryService
             return _mapper.Map<List<BookCategoryDTO>>(bookCategories);
         }
 
-        public async Task CreateBook(BookCategoryDTO bookCategoryDTO)
+        public async Task CreateBookCategory(BookCategoryDTO bookCategoryDTO)
         {
             await _bookCategoryRepository.CreateAsync(_mapper.Map<BookCategory>(bookCategoryDTO));
             await _bookCategoryRepository.SaveAsync();
         }
 
 
-        public Task<bool> RemoveBook(Guid bookId, Guid categoryId)
+        public Task<bool> RemoveBookCategory(Guid bookId, Guid categoryId)
         {
             return _bookCategoryRepository.DeleteById(bookId, categoryId);
         }

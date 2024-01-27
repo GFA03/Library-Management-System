@@ -5,8 +5,8 @@ namespace LibraryManagementSystem.Server.Services.BookCategoryService
     public interface IBookCategoryService
     {
         Task<List<BookCategoryDTO>> GetAllBookCategories();
-        Task CreateBook(BookCategoryDTO bookCategoryDTO);
-        Task<bool> RemoveBook(Guid bookId, Guid categoryId);
+        Task CreateBookCategory(BookCategoryDTO bookCategoryDTO);
+        Task<bool> RemoveBookCategory(Guid bookId, Guid categoryId);
 
     }
 }
