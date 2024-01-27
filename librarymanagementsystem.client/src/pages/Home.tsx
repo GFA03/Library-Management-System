@@ -5,7 +5,15 @@ export default function Home() {
     <div>
       <h1>Welcome to the Library Management System</h1>
       <p>This is the Home page.</p>
-      <Link to="/authors">Go to Authors List</Link>
+      <div>
+        <Link to="/authors">Go to Authors List</Link>
+      </div>
+      <div>
+        <Link to="/books">Go to Books List</Link>
+      </div>
+      <div>
+        <Link to="/categories">Go to Category List</Link>
+      </div>
     </div>
   );
 }
