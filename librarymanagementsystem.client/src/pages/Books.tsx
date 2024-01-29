@@ -34,6 +34,15 @@ function Books() {
   };
 
   const handleDeleteBook = async (id: string) => {
+    // Display a confirmation dialog before proceeding
+    const userConfirmed = window.confirm(
+      "Are you sure you want to delete this book?"
+    );
+
+    if (!userConfirmed) {
+      return; // Do nothing if the user cancels the deletion
+    }
+
     try {
       // Make a DELETE request to the API endpoint for deleting the Book
       const response = await fetch(

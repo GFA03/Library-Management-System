@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 interface Author {
@@ -10,7 +10,6 @@ interface Author {
 
 function Authors() {
   const [authors, setAuthors] = useState<Author[]>();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +30,6 @@ function Authors() {
 
   const handleDeleteAuthor = async (id: string) => {
     try {
-      // Make a DELETE request to the API endpoint for deleting the author
       const response = await fetch(
         `https://localhost:7277/api/Author/deleteAuthor/${id}`,
         {
@@ -52,31 +50,37 @@ function Authors() {
     }
   };
 
+  const handleEditAuthor = (author: Author) => {
+    navigate("update", { state: { author } });
+  };
+
+  const renderAuthors = () => {
+    return (
+      <ul>
+        {authors?.map((author) => (
+          <li key={author.id}>
+            {author.firstName} {author.lastName} - {author.nationality}
+            <button onClick={() => handleDeleteAuthor(author.id)}>
+              Delete
+            </button>
+            <button onClick={() => handleEditAuthor(author)}>Edit</button>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
-    <>
-      <div>
-        <h1>Author List</h1>
-        <ul>
-          {authors?.map((author) => (
-            <li key={author.id}>
-              {author.firstName} {author.lastName} - {author.nationality}
-              <button onClick={() => handleDeleteAuthor(author.id)}>
-                Delete
-              </button>
-              <button onClick={() => navigate("update", { state: { author } })}>
-                Edit
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div>
+      <h1>Author List</h1>
+      {renderAuthors()}
       <div>
         <Link to="/home">Go to Home Page</Link>
       </div>
       <div>
         <Link to="/authors/add">Add Author</Link>
       </div>
-    </>
+    </div>
   );
 }
 

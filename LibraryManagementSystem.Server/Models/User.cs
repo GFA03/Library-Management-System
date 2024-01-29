@@ -1,5 +1,4 @@
 ﻿using LibraryManagementSystem.Server.Models.Base;
-using LibraryManagementSystem.Server.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace LibraryManagementSystem.Server.Models
