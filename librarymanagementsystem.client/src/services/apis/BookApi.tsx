@@ -24,6 +24,11 @@ interface BookUpdateData {
   authorId: string;
 }
 
+interface BookCategoryData {
+  bookId: string;
+  categoryId: string;
+}
+
 async function handleApiResponse(response: Response): Promise<ApiResponse> {
   if (response.ok) {
     return { ok: true, statusText: response.statusText };
@@ -76,5 +81,32 @@ export async function updateBook(bookData: BookUpdateData): Promise<void> {
     }
   } catch (error) {
     console.error("Error updating Book:", error);
+  }
+}
+
+export async function createBookCategory(
+  bookCategoryData: BookCategoryData
+): Promise<void> {
+  try {
+    const response = await fetch(
+      "https://localhost:7277/api/BookCategory/CreateBookCategory",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookCategoryData),
+      }
+    );
+
+    const apiResponse = await handleApiResponse(response);
+
+    if (apiResponse.ok) {
+      console.log("Category added successfully to book!");
+    } else {
+      console.error("Error adding category to book: ", apiResponse.statusText);
+    }
+  } catch (error) {
+    console.error("Error adding category to book:", error);
   }
 }

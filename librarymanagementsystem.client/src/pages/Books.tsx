@@ -79,6 +79,10 @@ function Books() {
               <button onClick={() => navigate("update", { state: { book } })}>
                 Edit
               </button>
+              <button
+                onClick={() => navigate("addCategory", { state: { book } })}>
+                Add Category
+              </button>
             </li>
           ))}
         </ul>
