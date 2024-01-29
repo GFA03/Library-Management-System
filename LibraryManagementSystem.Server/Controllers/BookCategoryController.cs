@@ -28,7 +28,7 @@ namespace LibraryManagementSystem.Server.Controllers
         [HttpPost("CreateBookCategory")]
         public async Task<IActionResult> CreateBookCategory(BookCategoryDTO bookCategoryDto)
         {
-            _bookCategoryService.CreateBookCategory(bookCategoryDto);
+            await _bookCategoryService.CreateBookCategory(bookCategoryDto);
             return Ok(bookCategoryDto);
         }
 

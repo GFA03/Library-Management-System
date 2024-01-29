@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface BookData {
@@ -9,6 +9,12 @@ interface BookData {
   availableCopies: number;
   coverImage: string;
   authorId: string;
+}
+
+interface Author {
+  id: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface AddBookFormProps {
@@ -28,9 +34,32 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook }) => {
     authorId: "",
   });
 
+  const [authors, setAuthors] = useState<Author[]>([]);
+
+  useEffect(() => {
+    // Fetch the list of authors from the server
+    const fetchAuthors = async () => {
+      try {
+        const response = await fetch(
+          "https://localhost:7277/api/Author/getAuthorList"
+        );
+        const data = await response.json();
+        setAuthors(data);
+      } catch (error) {
+        console.error("Error fetching authors:", error);
+      }
+    };
+
+    fetchAuthors();
+  }, []);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBookData({ ...bookData, [name]: value });
+  };
+
+  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setBookData({ ...bookData, authorId: e.target.value });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -118,13 +147,20 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook }) => {
       {/* aici trebuie sa faci select din toata lista de autori */}
       <label>
         Author:
-        <input
-          type="text"
+        <select
           name="authorId"
           value={bookData.authorId}
-          onChange={handleInputChange}
-          required
-        />
+          onChange={handleSelectChange}
+          required>
+          <option value="" disabled>
+            Select an author
+          </option>
+          {authors.map((author) => (
+            <option key={author.id} value={author.id}>
+              {author.firstName} {author.lastName}
+            </option>
+          ))}
+        </select>
       </label>
       <br />
       <button type="submit">Add Book</button>

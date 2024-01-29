@@ -3,12 +3,16 @@ using LibraryManagementSystem.Server.Models.DTOs.AuthorDTO;
 using LibraryManagementSystem.Server.Models.DTOs.BookCategoriesDTO;
 using LibraryManagementSystem.Server.Models.DTOs.BookDTO;
 using LibraryManagementSystem.Server.Models.DTOs.CategoryDTO;
+using LibraryManagementSystem.Server.Models.DTOs.UserDTO;
+using Microsoft.AspNetCore.Identity;
 
 namespace LibraryManagementSystem.Server.Helpers
 {
     public class MapperProfile : AutoMapper.Profile
     {
         public MapperProfile() {
+
+            var hasher = new PasswordHasher<User>();
 
             CreateMap<Author, AuthorDTO>();
             CreateMap<AuthorDTO, Author>();
@@ -57,6 +61,37 @@ namespace LibraryManagementSystem.Server.Helpers
             CreateMap<UpdateCategoryDTO, Category>()
                 .ForMember(c => c.LastModified, opt =>
                     opt.MapFrom(src => DateTime.Now));
+
+            CreateMap<User, UserDTO>();
+            CreateMap<UserDTO, User>()
+                .ForMember(u => u.Id, opt 
+                => opt.MapFrom(src => new Guid()));
+
+            CreateMap<CreateUserDTO, User>()
+                .ForMember(u => u.Id, opt =>
+                    opt.MapFrom(src => new Guid()))
+                .ForMember(u => u.PasswordHash, opt =>
+                    opt.MapFrom(src => hasher.HashPassword(null, src.Password)))
+                .ForMember(u => u.LockoutEnabled, opt =>
+                    opt.MapFrom(src => false))
+                .ForMember(u => u.SecurityStamp, opt =>
+                    opt.Ignore());
+
+            CreateMap<UserUpdateDTO, User>()
+                .ForMember(u => u.PasswordHash, opt =>
+                    opt.MapFrom(src => hasher.HashPassword(null, src.Password)));
+
+            CreateMap<SignUpDTO, User>()
+                .ForMember(u => u.Id, opt =>
+                    opt.MapFrom(src => new Guid()))
+                .ForMember(u => u.PasswordHash, opt =>
+                    opt.MapFrom(src => hasher.HashPassword(null, src.Password)))
+                .ForMember(u => u.LockoutEnabled, opt =>
+                    opt.MapFrom(src => false))
+                .ForMember(u => u.SecurityStamp, opt =>
+                    opt.Ignore());
+
+
         }
     }
 }
