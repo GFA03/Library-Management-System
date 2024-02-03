@@ -11,5 +11,7 @@ namespace LibraryManagementSystem.Server.Repositories.UserRepository
         Task CreateAsync(User user);
         Task Update(User user);
         Task DeleteAsync(Guid id);
+
+        Task SetBook(Guid userId, Guid bookId);
     }
 }

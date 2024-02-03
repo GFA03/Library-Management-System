@@ -4,6 +4,7 @@ using LibraryManagementSystem.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagementSystem.Server.Migrations
 {
     [DbContext(typeof(LibraryDatabaseContext))]
-    partial class LibraryDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240202175303_addedUserBookRelation")]
+    partial class addedUserBookRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,9 +71,6 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.Property<Guid?>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AvailableCopies")
-                        .HasColumnType("int");
-
                     b.Property<string>("CoverImage")
                         .HasColumnType("nvarchar(max)");
 
@@ -95,12 +95,19 @@ namespace LibraryManagementSystem.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Books");
                 });
@@ -207,8 +214,6 @@ namespace LibraryManagementSystem.Server.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -369,7 +374,13 @@ namespace LibraryManagementSystem.Server.Migrations
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("LibraryManagementSystem.Server.Models.User", "User")
+                        .WithOne("Book")
+                        .HasForeignKey("LibraryManagementSystem.Server.Models.Book", "UserId");
+
                     b.Navigation("Author");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Server.Models.BookCategory", b =>
@@ -389,16 +400,6 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("LibraryManagementSystem.Server.Models.User", b =>
-                {
-                    b.HasOne("LibraryManagementSystem.Server.Models.Book", "Book")
-                        .WithMany("Users")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -460,8 +461,6 @@ namespace LibraryManagementSystem.Server.Migrations
             modelBuilder.Entity("LibraryManagementSystem.Server.Models.Book", b =>
                 {
                     b.Navigation("Categories");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Server.Models.Category", b =>
@@ -469,6 +468,11 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.Navigation("Books");
 
                     b.Navigation("PreferredAuthors");
+                });
+
+            modelBuilder.Entity("LibraryManagementSystem.Server.Models.User", b =>
+                {
+                    b.Navigation("Book");
                 });
 #pragma warning restore 612, 618
         }

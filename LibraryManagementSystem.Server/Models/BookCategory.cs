@@ -9,7 +9,6 @@ namespace LibraryManagementSystem.Server.Models
     [Index(nameof(CategoryId))]
     public class BookCategory
     {
-        //TODO: See if it is BookId or just Book !!!
         [ForeignKey(nameof(BookId))]
         public Guid BookId { get; set; }
         public Book Book { get; set; }

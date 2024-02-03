@@ -17,6 +17,7 @@ namespace LibraryManagementSystem.Server.Models
         public Guid? AuthorId {  get; set; }
         public Author? Author { get; set; }
 
+        public ICollection<User> Users { get; set; } = [];
         public ICollection<BookCategory> Categories { get; set; } = [];
 
     }

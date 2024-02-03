@@ -27,6 +27,13 @@ namespace LibraryManagementSystem.Server.Data
                 .HasForeignKey(book => book.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // User - Book (Many-to-One)
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Book)
+                .WithMany(b => b.Users)
+                .HasForeignKey(u => u.BookId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Author - Category (Many-to-One)
             modelBuilder.Entity<Author>()
                 .HasOne(author => author.PreferredCategory)

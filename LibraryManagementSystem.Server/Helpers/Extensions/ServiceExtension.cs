@@ -9,6 +9,7 @@ using LibraryManagementSystem.Server.Services.AuthorService;
 using LibraryManagementSystem.Server.Services.BookCategoryService;
 using LibraryManagementSystem.Server.Services.BookService;
 using LibraryManagementSystem.Server.Services.CategoryService;
+using LibraryManagementSystem.Server.Services.UserBookService;
 using LibraryManagementSystem.Server.Services.UserService;
 using Microsoft.AspNetCore.Identity;
 
@@ -36,6 +37,7 @@ namespace LibraryManagementSystem.Server.Helpers.Extensions
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IBookCategoryService, BookCategoryService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserBookService, UserBookService>();
 
             return services;
         }

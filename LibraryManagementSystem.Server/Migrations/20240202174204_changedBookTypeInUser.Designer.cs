@@ -4,6 +4,7 @@ using LibraryManagementSystem.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagementSystem.Server.Migrations
 {
     [DbContext(typeof(LibraryDatabaseContext))]
-    partial class LibraryDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240202174204_changedBookTypeInUser")]
+    partial class changedBookTypeInUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,7 +162,7 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("BookId")
+                    b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -394,9 +397,10 @@ namespace LibraryManagementSystem.Server.Migrations
             modelBuilder.Entity("LibraryManagementSystem.Server.Models.User", b =>
                 {
                     b.HasOne("LibraryManagementSystem.Server.Models.Book", "Book")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
@@ -460,8 +464,6 @@ namespace LibraryManagementSystem.Server.Migrations
             modelBuilder.Entity("LibraryManagementSystem.Server.Models.Book", b =>
                 {
                     b.Navigation("Categories");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Server.Models.Category", b =>

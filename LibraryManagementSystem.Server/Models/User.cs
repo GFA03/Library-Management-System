@@ -5,7 +5,8 @@ namespace LibraryManagementSystem.Server.Models
 {
     public class User : IdentityUser<Guid>
     {
-        // A user can borrow books
-        public ICollection<Book> Books { get; set; }
+        // a user can borrow a book
+        public Guid? BookId {  get; set; }
+        public Book? Book { get; set; }
     }
 }

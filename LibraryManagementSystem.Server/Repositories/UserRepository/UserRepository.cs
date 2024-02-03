@@ -56,5 +56,18 @@ namespace LibraryManagementSystem.Server.Repositories.UserRepository
             if ((await _userManager.DeleteAsync(existingUser)).Succeeded == false)
                 throw new Exception("User delete failed");
         }
+
+        public async Task SetBook(Guid userId, Guid bookId)
+        {
+            // Checking if bookId exists is made in Unit Of Work repository
+            var existingUser = await GetUserById(userId);
+
+            if(existingUser == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            existingUser.BookId = bookId;
+        }
     }
 }

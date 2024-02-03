@@ -4,6 +4,7 @@ using LibraryManagementSystem.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagementSystem.Server.Migrations
 {
     [DbContext(typeof(LibraryDatabaseContext))]
-    partial class LibraryDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240203072912_ChangedRelationBookUser")]
+    partial class ChangedRelationBookUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,7 +162,7 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("BookId")
+                    b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -396,7 +399,8 @@ namespace LibraryManagementSystem.Server.Migrations
                     b.HasOne("LibraryManagementSystem.Server.Models.Book", "Book")
                         .WithMany("Users")
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
