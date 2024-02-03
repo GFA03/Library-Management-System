@@ -71,16 +71,18 @@ function Authors() {
   };
 
   return (
-    <div>
-      <h1>Author List</h1>
-      {renderAuthors()}
+    <>
+      <div>
+        <h1>Author List</h1>
+        {renderAuthors()}
+      </div>
       <div>
         <Link to="/home">Go to Home Page</Link>
       </div>
       <div>
         <Link to="/authors/add">Add Author</Link>
       </div>
-    </div>
+    </>
   );
 }
 

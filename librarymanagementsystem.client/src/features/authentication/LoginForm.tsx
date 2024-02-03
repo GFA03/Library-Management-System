@@ -22,7 +22,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-4 border rounded bg-white">
+      className="max-w-md mx-auto p-4 border rounded bg-slate-200">
       <div className="mb-6">
         <label
           htmlFor="email"

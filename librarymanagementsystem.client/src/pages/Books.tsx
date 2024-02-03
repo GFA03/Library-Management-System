@@ -65,23 +65,95 @@ function Books() {
     }
   };
 
+  const handleLoanBook = async (id: string) => {
+    try {
+      // Make a Loan request to the API endpoint for loaning a Book
+      const response = await fetch(
+        `https://localhost:7277/api/UserBook/loan/${id}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "text/plain",
+          },
+          credentials: "include",
+          mode: "cors",
+        }
+      );
+
+      if (response.ok) {
+        // Book deleted successfully, update the Book list
+        fetchBooks();
+      } else {
+        // Handle error response
+        console.error("Error loaning book:", response.statusText);
+      }
+    } catch (error: unknown) {
+      // Handle network or other errors
+      console.error("Error loaning book:", error);
+    }
+  };
+
+  const handleReturnBook = async () => {
+    try {
+      // Make a Loan request to the API endpoint for loaning a Book
+      const response = await fetch(
+        `https://localhost:7277/api/UserBook/return`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "text/plain",
+          },
+          credentials: "include",
+          mode: "cors",
+        }
+      );
+
+      if (response.ok) {
+        // Book deleted successfully, update the Book list
+        fetchBooks();
+      } else {
+        // Handle error response
+        console.error("Error returning book:", response.statusText);
+      }
+    } catch (error: unknown) {
+      // Handle network or other errors
+      console.error("Error returning book:", error);
+    }
+  };
+
   return (
     <>
       <div>
         <h1>Book List</h1>
         <ul>
           {books?.map((book) => (
-            <li key={book.id}>
-              <h2>{book.title}</h2>
+            <li className="bg-slate-900 p-4 m-4" key={book.id}>
+              <p className="text-3xl font-bold">{book.title}</p>
               <i>{book.language}</i>
-              <p> {book.description}</p>
-              <button onClick={() => handleDeleteBook(book.id)}>Delete</button>
-              <button onClick={() => navigate("update", { state: { book } })}>
+              <p className="text-sm font-thin"> {book.description}</p>
+              <p>Available copies: {book.availableCopies}</p>
+              <button
+                className="p-2 m-2"
+                onClick={() => handleDeleteBook(book.id)}>
+                Delete
+              </button>
+              <button
+                className="p-2 m-2"
+                onClick={() => navigate("update", { state: { book } })}>
                 Edit
               </button>
               <button
+                className="p-2 m-2"
                 onClick={() => navigate("addCategory", { state: { book } })}>
                 Add Category
+              </button>
+              <button
+                className="p-2 m-2"
+                onClick={() => handleLoanBook(book.id)}>
+                Loan
+              </button>
+              <button className="p-2 m-2" onClick={() => handleReturnBook()}>
+                Return
               </button>
             </li>
           ))}

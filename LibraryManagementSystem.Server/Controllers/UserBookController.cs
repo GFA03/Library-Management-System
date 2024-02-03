@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [EnableCors("_myAllowSpecificOrigins")]
     public class UserBookController : ControllerBase
     {

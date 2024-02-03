@@ -19,11 +19,11 @@ const AppLayout: React.FC = () => {
             Library App
           </Link>
           <div className="space-x-4">
-            <Link to="/books" className="text-white hover:text-gray-300">
-              Books
-            </Link>
             <Link to="/authors" className="text-white hover:text-gray-300">
               Authors
+            </Link>
+            <Link to="/books" className="text-white hover:text-gray-300">
+              Books
             </Link>
             <Link to="/categories" className="text-white hover:text-gray-300">
               Categories

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Logo: React.FC = () => {
-  const logoSrc = "../assets/libraryLogo.jpg";
+  const logoSrc = "libraryLogo.jpg";
 
   return (
     <div className="text-center">

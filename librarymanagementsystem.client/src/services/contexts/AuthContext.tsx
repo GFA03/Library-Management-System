@@ -33,6 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           email: email,
           password: password,
         }),
+        credentials: "include",
       });
 
       if (response.ok) {
