@@ -116,7 +116,8 @@ namespace LibraryManagementSystem.Server.Controllers
             {
                 return Ok(new ResponseLoginDTO()
                 {
-                    Id = await _userService.Login(loginBody)
+                    Id = await _userService.Login(loginBody),
+                    Role = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(loginBody.Email)),
                 });
             }
             catch (EmailNotFoundException exception)

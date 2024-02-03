@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../services/contexts/AuthContext";
 
 interface Author {
   id: string;
@@ -11,6 +12,9 @@ interface Author {
 function Authors() {
   const [authors, setAuthors] = useState<Author[]>();
   const navigate = useNavigate();
+  const { role } = useAuth();
+
+  const isAdmin = role === "Admin";
 
   useEffect(() => {
     fetchAuthors();
@@ -60,10 +64,14 @@ function Authors() {
         {authors?.map((author) => (
           <li key={author.id}>
             {author.firstName} {author.lastName} - {author.nationality}
-            <button onClick={() => handleDeleteAuthor(author.id)}>
-              Delete
-            </button>
-            <button onClick={() => handleEditAuthor(author)}>Edit</button>
+            {isAdmin && (
+              <button onClick={() => handleDeleteAuthor(author.id)}>
+                Delete
+              </button>
+            )}
+            {isAdmin && (
+              <button onClick={() => handleEditAuthor(author)}>Edit</button>
+            )}
           </li>
         ))}
       </ul>
@@ -79,9 +87,11 @@ function Authors() {
       <div>
         <Link to="/home">Go to Home Page</Link>
       </div>
-      <div>
-        <Link to="/authors/add">Add Author</Link>
-      </div>
+      {isAdmin && (
+        <div>
+          <Link to="/authors/add">Add Author</Link>
+        </div>
+      )}
     </>
   );
 }

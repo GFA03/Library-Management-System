@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../services/contexts/AuthContext";
 
 interface Category {
   id: string;
@@ -9,6 +10,10 @@ interface Category {
 
 function Categories() {
   const [categories, setCategories] = useState<Category[]>();
+
+  const { role } = useAuth();
+
+  const isAdmin = role === "Admin";
 
   const navigate = useNavigate();
 
@@ -59,13 +64,17 @@ function Categories() {
           {categories?.map((category) => (
             <li key={category.id}>
               {category.name} - {category.description}
-              <button onClick={() => handleDeleteCategory(category.id)}>
-                Delete
-              </button>
-              <button
-                onClick={() => navigate("update", { state: { category } })}>
-                Edit
-              </button>
+              {isAdmin && (
+                <button onClick={() => handleDeleteCategory(category.id)}>
+                  Delete
+                </button>
+              )}
+              {isAdmin && (
+                <button
+                  onClick={() => navigate("update", { state: { category } })}>
+                  Edit
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -73,9 +82,11 @@ function Categories() {
       <div>
         <Link to="/home">Go to Home Page</Link>
       </div>
-      <div>
-        <Link to="/categories/add">Add Category</Link>
-      </div>
+      {isAdmin && (
+        <div>
+          <Link to="/categories/add">Add Category</Link>
+        </div>
+      )}
     </>
   );
 }

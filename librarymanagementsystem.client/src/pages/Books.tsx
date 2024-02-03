@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../services/contexts/AuthContext";
 
 interface Book {
   id: string;
@@ -14,6 +15,9 @@ interface Book {
 
 function Books() {
   const [books, setBooks] = useState<Book[]>();
+  const { role } = useAuth();
+
+  const isAdmin = role === "Admin";
 
   const navigate = useNavigate();
 
@@ -132,21 +136,29 @@ function Books() {
               <i>{book.language}</i>
               <p className="text-sm font-thin"> {book.description}</p>
               <p>Available copies: {book.availableCopies}</p>
-              <button
-                className="p-2 m-2"
-                onClick={() => handleDeleteBook(book.id)}>
-                Delete
-              </button>
-              <button
-                className="p-2 m-2"
-                onClick={() => navigate("update", { state: { book } })}>
-                Edit
-              </button>
-              <button
-                className="p-2 m-2"
-                onClick={() => navigate("addCategory", { state: { book } })}>
-                Add Category
-              </button>
+              {isAdmin && (
+                <button
+                  className="p-2 m-2"
+                  onClick={() => handleDeleteBook(book.id)}>
+                  Delete
+                </button>
+              )}
+
+              {isAdmin && (
+                <button
+                  className="p-2 m-2"
+                  onClick={() => navigate("update", { state: { book } })}>
+                  Edit
+                </button>
+              )}
+
+              {isAdmin && (
+                <button
+                  className="p-2 m-2"
+                  onClick={() => navigate("addCategory", { state: { book } })}>
+                  Add Category
+                </button>
+              )}
               <button
                 className="p-2 m-2"
                 onClick={() => handleLoanBook(book.id)}>
@@ -162,9 +174,11 @@ function Books() {
       <div>
         <Link to="/home">Go to Home Page</Link>
       </div>
-      <div>
-        <Link to="/books/add">Add Book</Link>
-      </div>
+      {isAdmin && (
+        <div>
+          <Link to="/books/add">Add Book</Link>
+        </div>
+      )}
     </>
   );
 }

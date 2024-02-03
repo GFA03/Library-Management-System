@@ -2,6 +2,7 @@ import React, { createContext, useContext, ReactNode, useState } from "react";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
+  role: string;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   signup: (user: RegisterUserProps) => Promise<boolean>;
@@ -21,6 +22,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [role, setRole] = useState<string>("");
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -37,6 +39,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
       if (response.ok) {
+        const data = await response.json();
+        setRole(() => data.role[0]);
         setIsAuthenticated(true);
         return true; // Login successful
       } else {
@@ -95,7 +99,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, signup }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, role, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );
