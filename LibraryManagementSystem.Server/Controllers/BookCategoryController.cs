@@ -1,5 +1,6 @@
 ﻿using LibraryManagementSystem.Server.Models.DTOs.BookCategoriesDTO;
 using LibraryManagementSystem.Server.Services.BookCategoryService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace LibraryManagementSystem.Server.Controllers
             _bookCategoryService = bookCategoryService;
         }
 
+        [Authorize]
         [HttpGet("GetBookCategoryList")]
         [ProducesResponseType(typeof(List<BookCategoryDTO>), 200)]
         public async Task<IActionResult> GetAllBookCategories()
@@ -25,6 +27,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return Ok(bookCategories);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateBookCategory")]
         public async Task<IActionResult> CreateBookCategory(BookCategoryDTO bookCategoryDto)
         {
@@ -32,6 +35,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return Ok(bookCategoryDto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("RemoveBookCategory/{bookId}/{categoryId}")]
         public async Task<IActionResult> RemoveBookCategory(Guid bookId, Guid categoryId)
         {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "../../services/axios";
 
 interface BookCategoryData {
   bookId: string;
@@ -29,11 +30,8 @@ const AddCategoryToBookForm: React.FC<AddCategoryToBookFormProps> = ({
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(
-        "https://localhost:7277/api/Category/getCategories"
-      );
-      const data = await response.json();
-      setCategories(data);
+      const response = await axios.get("Category/getCategories");
+      setCategories(response.data);
     } catch (error) {
       console.error("Error fetching Categorys:", error);
     }

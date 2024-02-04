@@ -1,5 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "../../services/axios";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 interface BookData {
   id: string;
@@ -12,6 +15,12 @@ interface BookData {
   authorId: string;
 }
 
+interface Author {
+  id: string;
+  firstName: string;
+  lastName: string;
+}
+
 interface UpdateBookFormProps {
   onUpdateBook: (bookData: BookData) => void;
 }
@@ -20,14 +29,27 @@ const UpdateBookForm: React.FC<UpdateBookFormProps> = ({ onUpdateBook }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [authors, setAuthors] = React.useState<Author[]>([]);
+
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const response = await axios.get("Author/getAuthorList");
+        setAuthors(response.data);
+      } catch (error) {
+        console.error("Error fetching authors:", error);
+      }
+    };
+
+    fetchAuthors();
+  }, []);
+
   const initialBookData: BookData =
     location.state && (location.state as { book: BookData }).book;
 
-  // const initialBookData: BookData | undefined = location.state;
-
-  const [bookData, setBookData] = useState<BookData>(
-    initialBookData || {
-      id: "",
+  const formik = useFormik({
+    initialValues: {
+      id: initialBookData.id,
       title: "",
       language: "",
       description: "",
@@ -35,29 +57,39 @@ const UpdateBookForm: React.FC<UpdateBookFormProps> = ({ onUpdateBook }) => {
       availableCopies: 0,
       coverImage: "",
       authorId: "",
-    }
-  );
-
-  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setBookData({ ...bookData, [name]: value });
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await onUpdateBook(bookData); // Call the function passed from the parent component to update the Book
-    navigate("/books");
-  };
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Title is required"),
+      language: Yup.string().required("Language is required"),
+      description: Yup.string().required("Description is required"),
+      publicationDate: Yup.number()
+        .required("Publication date is required")
+        .integer("Publication date must be an integer"),
+      availableCopies: Yup.number()
+        .required("Available copies is required")
+        .integer("Available copies must be an integer"),
+      coverImage: Yup.string().required("Cover image is required"),
+      authorId: Yup.string().required("Author is required"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        await onUpdateBook(values);
+        navigate("/books");
+      } catch (error) {
+        console.error("Error adding Book:", error);
+      }
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={formik.handleSubmit}>
       <label>
         Title:
         <input
           type="text"
           name="title"
-          value={bookData.title}
-          onChange={handleInputChange}
+          value={formik.values.title}
+          onChange={formik.handleChange}
           placeholder={initialBookData.title}
           required
         />
@@ -68,8 +100,8 @@ const UpdateBookForm: React.FC<UpdateBookFormProps> = ({ onUpdateBook }) => {
         <input
           type="text"
           name="language"
-          value={bookData.language}
-          onChange={handleInputChange}
+          value={formik.values.language}
+          onChange={formik.handleChange}
           placeholder={initialBookData.language}
           required
         />
@@ -80,8 +112,8 @@ const UpdateBookForm: React.FC<UpdateBookFormProps> = ({ onUpdateBook }) => {
         <input
           type="text"
           name="description"
-          value={bookData.description}
-          onChange={handleInputChange}
+          value={formik.values.description}
+          onChange={formik.handleChange}
           placeholder={initialBookData.description}
           required
         />
@@ -92,8 +124,8 @@ const UpdateBookForm: React.FC<UpdateBookFormProps> = ({ onUpdateBook }) => {
         <input
           type="number"
           name="publicationDate"
-          value={bookData.publicationDate}
-          onChange={handleInputChange}
+          value={formik.values.publicationDate}
+          onChange={formik.handleChange}
           placeholder={initialBookData.publicationDate.toString()}
           required
         />
@@ -104,8 +136,8 @@ const UpdateBookForm: React.FC<UpdateBookFormProps> = ({ onUpdateBook }) => {
         <input
           type="number"
           name="availableCopies"
-          value={bookData.availableCopies}
-          onChange={handleInputChange}
+          value={formik.values.availableCopies}
+          onChange={formik.handleChange}
           placeholder={initialBookData.availableCopies.toString()}
           required
         />
@@ -116,24 +148,30 @@ const UpdateBookForm: React.FC<UpdateBookFormProps> = ({ onUpdateBook }) => {
         <input
           type="text"
           name="coverImage"
-          value={bookData.coverImage}
-          onChange={handleInputChange}
+          value={formik.values.coverImage}
+          onChange={formik.handleChange}
           placeholder={initialBookData.coverImage}
           required
         />
       </label>
       <br />
-      {/* aici trebuie sa faci select din toata lista de autori */}
+
       <label>
         Author:
-        <input
-          type="text"
+        <select
           name="authorId"
-          value={bookData.authorId}
-          onChange={handleInputChange}
-          placeholder={initialBookData.authorId}
-          required
-        />
+          value={formik.values.authorId}
+          onChange={formik.handleChange}
+          required>
+          <option value="" disabled>
+            Select an author
+          </option>
+          {authors.map((author) => (
+            <option key={author.id} value={author.id}>
+              {author.firstName} {author.lastName}
+            </option>
+          ))}
+        </select>
       </label>
       <br />
       <button type="submit">Update Book</button>

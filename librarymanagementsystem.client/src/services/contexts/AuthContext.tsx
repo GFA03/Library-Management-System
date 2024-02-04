@@ -1,4 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, ReactNode, useState } from "react";
+import axios from "../axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -26,27 +30,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch("https://localhost:7277/api/User/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setRole(() => data.role[0]);
-        setIsAuthenticated(true);
-        return true; // Login successful
+      const response = await axios.post("User/login", { email, password });
+      setRole(response.data.role[0]);
+      setIsAuthenticated(true);
+      if (response.status === 200) {
+        toast.success("Login successful!");
       } else {
-        console.error("Error logging in: ", response.statusText);
-        return false; // Login failed
+        toast.error("Error logging in!");
       }
+      return true;
     } catch (error) {
       console.error("Error logging in: ", error);
       return false; // Login failed due to an error
@@ -55,17 +47,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("https://localhost:7277/api/User/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        setIsAuthenticated(false);
+      const response = await axios.post("User/logout");
+      setIsAuthenticated(false);
+      if (response.status === 200) {
+        toast.success("Logout Successful!");
       } else {
-        console.error("Error when trying to log out: ", response.statusText);
+        toast.error("Error logging out");
       }
     } catch (error) {
       console.error("Error when trying to log out: ", error);
@@ -74,15 +61,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signup = async (user: RegisterUserProps): Promise<boolean> => {
     try {
-      const response = await fetch("https://localhost:7277/api/User/register", {
-        method: "POST",
+      const response = await axios.post("User/register", user, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(user),
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         alert("Account created successfully!");
         return true;
       } else {

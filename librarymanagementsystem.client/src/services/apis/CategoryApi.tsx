@@ -1,3 +1,6 @@
+import { toast } from "react-toastify";
+import axios from "../axios";
+
 interface CategoryData {
   name: string;
   description: string;
@@ -14,22 +17,13 @@ export async function createCategory(
   categoryData: CategoryData
 ): Promise<void> {
   try {
-    const response = await fetch(
-      "https://localhost:7277/api/Category/createCategory",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(categoryData),
-      }
-    );
+    const response = await axios.post("Category/createCategory", categoryData);
 
-    if (response.ok) {
-      // Category added successfully - redirect to Category list
-      console.log("Category added successfully");
+    console.log(response.status);
+    if (response.status === 201) {
+      toast.success("Category added successfully");
     } else {
-      console.error("Error adding Category: ", response.statusText);
+      toast.error("Error adding Category!");
     }
   } catch (error) {
     console.error("Error adding Category:", error);
@@ -40,24 +34,12 @@ export async function updateCategory(
   categoryData: CategoryUpdateData
 ): Promise<void> {
   try {
-    console.log(categoryData);
-    const response = await fetch(
-      `https://localhost:7277/api/Category/updateCategory`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(categoryData),
-      }
-    );
+    const response = await axios.put("Category/updateCategory", categoryData);
 
-    if (response.ok) {
-      // Category updated successfully - navigate back to the Category list
-
-      console.log("Category updated successfully");
+    if (response.status === 201) {
+      toast.success("Category updated successfully");
     } else {
-      console.error("Error updating Category: ", response.statusText);
+      toast.error("Error updating Category!");
     }
   } catch (error) {
     console.error("Error updating Category:", error);

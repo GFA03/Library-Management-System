@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/contexts/AuthContext";
+import axios from "../services/axios";
+import { toast } from "react-toastify";
 
 interface Category {
   id: string;
@@ -23,11 +25,9 @@ function Categories() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(
-        "https://localhost:7277/api/Category/getCategories"
-      );
-      const data = await response.json();
-      setCategories(data);
+      const response = await axios.get("Category/getCategories");
+
+      setCategories(response.data);
     } catch (error) {
       console.error("Error fetching Categorys:", error);
     }
@@ -36,23 +36,16 @@ function Categories() {
   const handleDeleteCategory = async (id: string) => {
     try {
       // Make a DELETE request to the API endpoint for deleting the Category
-      const response = await fetch(
-        `https://localhost:7277/api/Category/deleteCategory/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await axios.delete(`Category/deleteCategory/${id}`);
 
-      if (response.ok) {
-        // Category deleted successfully, update the Category list
+      if (response.status === 201) {
+        toast.success("Category deleted successfully");
         fetchCategories();
       } else {
-        // Handle error response
-        console.error("Error deleting Category:", response.statusText);
+        toast.error("Error deleting category!");
       }
     } catch (error: unknown) {
-      // Handle network or other errors
-      console.error("Error:", error);
+      toast.error("Error deleting category!");
     }
   };
 

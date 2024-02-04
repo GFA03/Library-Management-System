@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/contexts/AuthContext";
+import axios from "../services/axios";
+import { toast } from "react-toastify";
 
 interface Book {
   id: string;
@@ -27,11 +29,8 @@ function Books() {
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch(
-        "https://localhost:7277/api/Book/GetBooksList"
-      );
-      const data = await response.json();
-      setBooks(data);
+      const response = await axios.get("Book/GetBooksList");
+      setBooks(response.data);
     } catch (error) {
       console.error("Error fetching books:", error);
     }
@@ -49,79 +48,46 @@ function Books() {
 
     try {
       // Make a DELETE request to the API endpoint for deleting the Book
-      const response = await fetch(
-        `https://localhost:7277/api/Book/deleteBook/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (response.ok) {
-        // Book deleted successfully, update the Book list
+      const response = await axios.delete(`Book/deletebook/${id}`);
+      if (response.status === 201) {
+        toast.success("Book deleted successfully!");
         fetchBooks();
       } else {
-        // Handle error response
-        console.error("Error deleting book:", response.statusText);
+        toast.error("Error deleting book!");
       }
     } catch (error: unknown) {
-      // Handle network or other errors
-      console.error("Error:", error);
+      toast.error("Error deleting book!");
     }
   };
 
   const handleLoanBook = async (id: string) => {
     try {
-      // Make a Loan request to the API endpoint for loaning a Book
-      const response = await fetch(
-        `https://localhost:7277/api/UserBook/loan/${id}`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "text/plain",
-          },
-          credentials: "include",
-          mode: "cors",
-        }
-      );
+      const response = await axios.post(`UserBook/loan/${id}`);
 
-      if (response.ok) {
-        // Book deleted successfully, update the Book list
+      if (response.status === 200) {
+        toast.success("Book loaned successfully!");
         fetchBooks();
       } else {
-        // Handle error response
-        console.error("Error loaning book:", response.statusText);
+        toast.error("Error loaning book!");
       }
     } catch (error: unknown) {
-      // Handle network or other errors
-      console.error("Error loaning book:", error);
+      toast.error("Error loaning book!");
     }
   };
 
   const handleReturnBook = async () => {
     try {
-      // Make a Loan request to the API endpoint for loaning a Book
-      const response = await fetch(
-        `https://localhost:7277/api/UserBook/return`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "text/plain",
-          },
-          credentials: "include",
-          mode: "cors",
-        }
-      );
+      // Make a Return request to the API endpoint for returning a Book
+      const response = await axios.post(`UserBook/return`);
 
-      if (response.ok) {
-        // Book deleted successfully, update the Book list
+      if (response.status === 200) {
+        toast.success("Book returned successfully!");
         fetchBooks();
       } else {
-        // Handle error response
-        console.error("Error returning book:", response.statusText);
+        toast.error("Error returning book!");
       }
     } catch (error: unknown) {
-      // Handle network or other errors
-      console.error("Error returning book:", error);
+      toast.error("Error returning book!");
     }
   };
 

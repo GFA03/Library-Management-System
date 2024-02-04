@@ -2,6 +2,8 @@ import React from "react";
 import Logo from "../ui/Logo";
 import LoginForm from "../features/authentication/LoginForm";
 import { Link } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const Login: React.FC = () => {
   return (
@@ -9,6 +11,7 @@ const Login: React.FC = () => {
       <Logo />
       <h4 className="text-xl font-semibold">Log in to your account</h4>
       <LoginForm />
+      <ToastContainer />
       <div className="text-center">
         <p>
           Don't have an account?{" "}

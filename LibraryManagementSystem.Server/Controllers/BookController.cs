@@ -1,5 +1,6 @@
 ﻿using LibraryManagementSystem.Server.Models.DTOs.BookDTO;
 using LibraryManagementSystem.Server.Services.BookService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace LibraryManagementSystem.Server.Controllers
             _bookService = bookService;
         }
 
+        [Authorize]
         [HttpGet("GetBooksList")]
         [ProducesResponseType(typeof(List<BookDTO>), 200)]
         public async Task<IActionResult> GetAllBooks()
@@ -25,7 +27,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return Ok(books);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("createBook")]
         public async Task<IActionResult> AddBook(CreateBookDTO bookDto)
         {
@@ -33,6 +35,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return CreatedAtAction(nameof(AddBook), null);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("updateBook")]
         public IActionResult UpdateBook(UpdateBookDTO bookDto)
         {
@@ -40,6 +43,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return CreatedAtAction(nameof(UpdateBook), null);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("deleteBook/{id}")]
         public async Task<IActionResult> RemoveBook(Guid id)
         {

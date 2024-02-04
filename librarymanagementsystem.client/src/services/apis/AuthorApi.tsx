@@ -1,3 +1,6 @@
+import { toast } from "react-toastify";
+import axios from "../axios";
+
 interface AuthorData {
   firstName: string;
   lastName: string;
@@ -13,25 +16,15 @@ interface AuthorUpdateData {
 
 export async function createAuthor(authorData: AuthorData): Promise<void> {
   try {
-    const response = await fetch(
-      "https://localhost:7277/api/Author/createAuthor",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(authorData),
-      }
-    );
+    const response = await axios.post("Author/createAuthor", authorData);
 
-    if (response.ok) {
-      // Author added successfully - redirect to author list
-      console.log("Author added successfully");
+    if (response.status === 201) {
+      toast.success("Author added successfully");
     } else {
-      console.error("Error adding author: ", response.statusText);
+      toast.error("Error adding author!");
     }
   } catch (error) {
-    console.error("Error adding author:", error);
+    console.error(error);
   }
 }
 
@@ -39,24 +32,14 @@ export async function updateAuthor(
   authorData: AuthorUpdateData
 ): Promise<void> {
   try {
-    console.log(authorData);
-    const response = await fetch(
-      `https://localhost:7277/api/Author/updateAuthor`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(authorData),
-      }
-    );
+    const response = await axios.put("Author/updateAuthor", authorData);
 
-    if (response.ok) {
-      // Author updated successfully - navigate back to the author list
+    console.log(response.status);
 
-      console.log("Author updated successfully");
+    if (response.status === 201) {
+      toast.success("Author updated successfully");
     } else {
-      console.error("Error updating author: ", response.statusText);
+      toast.error("Error updating author!");
     }
   } catch (error) {
     console.error("Error updating author:", error);

@@ -1,27 +1,32 @@
 import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useAuth } from "../../services/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-interface LoginFormProps {}
-
-const LoginForm: React.FC<LoginFormProps> = () => {
+const LoginForm: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = {
-      email: (e.target as HTMLFormElement).email.value,
-      password: (e.target as HTMLFormElement).password.value,
-    };
-    const res = await login(formData.email, formData.password);
-    if (res === true) navigate("/home");
-    else alert("Login failed");
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      password: Yup.string().required("Required"),
+    }),
+    onSubmit: async (values) => {
+      const res = await login(values.email, values.password);
+      if (res === true) navigate("/home");
+      else alert("Login failed");
+    },
+  });
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={formik.handleSubmit}
       className="max-w-md mx-auto p-4 border rounded bg-slate-200">
       <div className="mb-6">
         <label
@@ -33,9 +38,17 @@ const LoginForm: React.FC<LoginFormProps> = () => {
           type="email"
           id="email"
           name="email"
-          className="w-full px-3 py-2 mt-1 text-sm border rounded"
+          className={`w-full px-3 py-2 mt-1 text-sm border rounded ${
+            formik.touched.email && formik.errors.email ? "border-red-500" : ""
+          }`}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
           required
         />
+        {formik.touched.email && formik.errors.email && (
+          <div className="text-red-500 text-sm">{formik.errors.email}</div>
+        )}
       </div>
       <div className="mb-6">
         <label
@@ -47,9 +60,19 @@ const LoginForm: React.FC<LoginFormProps> = () => {
           type="password"
           id="password"
           name="password"
-          className="w-full px-3 py-2 mt-1 text-sm border rounded"
+          className={`w-full px-3 py-2 mt-1 text-sm border rounded ${
+            formik.touched.password && formik.errors.password
+              ? "border-red-500"
+              : ""
+          }`}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
           required
         />
+        {formik.touched.password && formik.errors.password && (
+          <div className="text-red-500 text-sm">{formik.errors.password}</div>
+        )}
       </div>
       <button
         type="submit"

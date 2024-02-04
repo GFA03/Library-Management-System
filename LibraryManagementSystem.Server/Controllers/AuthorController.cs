@@ -1,5 +1,6 @@
 ﻿using LibraryManagementSystem.Server.Models.DTOs.AuthorDTO;
 using LibraryManagementSystem.Server.Services.AuthorService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace LibraryManagementSystem.Server.Controllers
             _authorService = authorService;
         }
 
+        [Authorize]
         [HttpGet("getAuthorList")]
         [ProducesResponseType(typeof(List<AuthorDTO>), 200)]
         public async Task<IActionResult> GetAllAuthors()
@@ -25,7 +27,7 @@ namespace LibraryManagementSystem.Server.Controllers
             return Ok(authors);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("createAuthor")]
         public async Task<IActionResult> AddAuthor(CreateAuthorDTO authorDto)
         {
@@ -33,13 +35,15 @@ namespace LibraryManagementSystem.Server.Controllers
             return CreatedAtAction(nameof(AddAuthor), null);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("updateAuthor")]
-        public IActionResult UpdateAuthor(UpdateAuthorDTO authorDto)
+        public IActionResult UpdateAuthor([FromBody] UpdateAuthorDTO authorDto)
         {
             _authorService.UpdateAuthor(authorDto);
             return CreatedAtAction(nameof(UpdateAuthor), null);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("deleteAuthor/{id}")]
         public async Task<IActionResult> RemoveAuthor(Guid id)
         {

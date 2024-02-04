@@ -1,8 +1,10 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface AuthorData {
-  id: string; // Add the id field for updating
+  id: string;
   firstName: string;
   lastName: string;
   nationality: string;
@@ -18,68 +20,81 @@ const UpdateAuthorForm: React.FC<UpdateAuthorFormProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const initialAuthorData: AuthorData =
-    location.state && (location.state as { author: AuthorData }).author;
-
-  // const initialAuthorData: AuthorData | undefined = location.state;
-
-  const [authorData, setAuthorData] = useState<AuthorData>(
-    initialAuthorData || {
-      id: "",
-      firstName: "",
-      lastName: "",
-      nationality: "",
-    }
-  );
-
-  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAuthorData({ ...authorData, [name]: value });
+  const initialAuthorData: AuthorData = (
+    location.state as { author: AuthorData }
+  ).author || {
+    id: "",
+    firstName: "",
+    lastName: "",
+    nationality: "",
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await onUpdateAuthor(authorData); // Call the function passed from the parent component to update the author
-    navigate("/authors");
-  };
+  const formik = useFormik({
+    initialValues: {
+      firstName: initialAuthorData.firstName,
+      lastName: initialAuthorData.lastName,
+      nationality: initialAuthorData.nationality,
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required("First Name is required"),
+      lastName: Yup.string().required("Last Name is required"),
+      nationality: Yup.string().required("Nationality is required"),
+    }),
+    onSubmit: (values) => {
+      onUpdateAuthor({
+        id: initialAuthorData.id,
+        ...values,
+      });
+      navigate("/authors");
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={formik.handleSubmit}>
       <label>
         First Name:
         <input
           type="text"
           name="firstName"
-          value={authorData.firstName}
+          value={formik.values.firstName}
           placeholder={initialAuthorData.firstName}
-          onChange={handleInputChange}
-          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </label>
+      {formik.touched.firstName && formik.errors.firstName && (
+        <div>{formik.errors.firstName}</div>
+      )}
       <br />
       <label>
         Last Name:
         <input
           type="text"
           name="lastName"
-          value={authorData.lastName}
+          value={formik.values.lastName}
           placeholder={initialAuthorData.lastName}
-          onChange={handleInputChange}
-          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </label>
+      {formik.touched.lastName && formik.errors.lastName && (
+        <div>{formik.errors.lastName}</div>
+      )}
       <br />
       <label>
         Nationality:
         <input
           type="text"
           name="nationality"
-          value={authorData.nationality}
+          value={formik.values.nationality}
           placeholder={initialAuthorData.nationality}
-          onChange={handleInputChange}
-          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </label>
+      {formik.touched.nationality && formik.errors.nationality && (
+        <div>{formik.errors.nationality}</div>
+      )}
       <br />
       <button type="submit">Update Author</button>
     </form>

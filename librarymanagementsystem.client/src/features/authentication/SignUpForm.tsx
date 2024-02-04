@@ -1,31 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useAuth } from "../../services/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 interface SignUpFormProps {}
 
 const SignUpForm: React.FC<SignUpFormProps> = () => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
   const { signup } = useAuth();
-
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const res: boolean = await signup({ email, username, password });
-    if (res) {
-      alert("Sign up successful");
-      navigate("/login");
-    } else {
-      alert("Sign up failed");
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      username: Yup.string().required("Required"),
+      password: Yup.string().required("Required"),
+    }),
+    onSubmit: async (values) => {
+      const res: boolean = await signup(values);
+      if (res) {
+        alert("Sign up successful");
+        navigate("/login");
+      } else {
+        alert("Sign up failed");
+      }
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div>
         <label
           htmlFor="email"
@@ -36,11 +44,16 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
           type="email"
           id="email"
           name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
           required
-          className="mt-1 p-2 w-full border rounded-md"
+          className={`mt-1 p-2 w-full border rounded-md ${
+            formik.touched.email && formik.errors.email ? "border-red-500" : ""
+          }`}
         />
+        {formik.touched.email && formik.errors.email && (
+          <div className="text-red-500 text-sm">{formik.errors.email}</div>
+        )}
       </div>
       <div>
         <label
@@ -52,11 +65,18 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
           type="text"
           id="username"
           name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={formik.values.username}
+          onChange={formik.handleChange}
           required
-          className="mt-1 p-2 w-full border rounded-md"
+          className={`mt-1 p-2 w-full border rounded-md ${
+            formik.touched.username && formik.errors.username
+              ? "border-red-500"
+              : ""
+          }`}
         />
+        {formik.touched.username && formik.errors.username && (
+          <div className="text-red-500 text-sm">{formik.errors.username}</div>
+        )}
       </div>
       <div>
         <label
@@ -68,11 +88,18 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
           type="password"
           id="password"
           name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
           required
-          className="mt-1 p-2 w-full border rounded-md"
+          className={`mt-1 p-2 w-full border rounded-md ${
+            formik.touched.password && formik.errors.password
+              ? "border-red-500"
+              : ""
+          }`}
         />
+        {formik.touched.password && formik.errors.password && (
+          <div className="text-red-500 text-sm">{formik.errors.password}</div>
+        )}
       </div>
       <div>
         <button
